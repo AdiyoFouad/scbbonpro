@@ -30,10 +30,10 @@ function getUsers(){
     return $req;
 }
 
-function creerUser($nom, $prenom, $email, $departement, $administrateur, $mdp){
+function creerUser($nom, $prenom, $email, $departement, $type_user, $mdp){
     $req = execSQL(
         'INSERT INTO users(nom, prenom, email, departement, type_user, mdp) VALUES(?, ?, ?, ?, ?, ? )',
-        array($nom, $prenom, $email, $departement, $administrateur, $mdp)
+        array($nom, $prenom, $email, $departement, $type_user, $mdp)
     );
 }
 
@@ -58,10 +58,10 @@ function getUsersByDepartement($departement){
     return $res;
 }
 
-function alterUser($nom, $prenom, $email, $departement, $administrateur, $mdp, $user_id){
+function alterUser($nom, $prenom, $email, $departement, $type_user, $mdp, $user_id){
     $req = execSQL(
         'UPDATE users SET nom = ?, prenom = ?, email = ?, departement = ?, administrateur = ?, mdp = ? WHERE id_user = ?',
-        array($nom, $prenom, $email, $departement, $administrateur, $mdp, $user_id)
+        array($nom, $prenom, $email, $departement, $type_user, $mdp, $user_id)
     );
 }
 

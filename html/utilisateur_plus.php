@@ -14,19 +14,6 @@
             <div class="card col">
                 <div class="card-body"> 
                 <form action="controllers/user_controler.php" method="post">
-            <input type="text" id="user_id2" name="user_id" hidden>
-            <div class="">
-                <span class="me-3 fw-semibold">Administrateur :</span>
-                <label for="non2" class="me-2">
-                    <input id="non2" type="radio" name="administrateur" value="0">
-                    Non
-                </label>
-
-                <label for="oui2" class="me-2 ">
-                    <input id="oui2" type="radio" name="administrateur" value="1" class=radio>
-                    Oui
-                </label>
-            </div>
 
             <div class="mb-3">
                 <label for="nom" class="form-label">Nom</label>
@@ -42,20 +29,32 @@
             </div>
             <div class="mb-3">
                 <label for="departement" class="form-label">Département</label>
-                <select id="departement2" class="form-select" name="departement" required>
+                <select id="departement" class="form-select" name="departement" required>
                     <option disabled selected>Département</option>
                     <option value="DE">DE</option>
                     <option value="Logistique">Logistique</option>
                     <option value="Comptabilité">Comptabilité</option>
                 </select>
+            </div>       
+            <div class="mb-3">
+                <label for="type_user" class="form-label">Type d'utilisateur</label>
+                <select id="type_user" class="form-select" name="type_user" required>
+                    <option value="SIMPLE" selected>Standard</option>
+                    <option value="DE">DE</option>
+                    <option value="CC">CC</option>
+                    <option value="DCLI">DCLI</option>
+                    <option value="DGA">DGA</option>
+                    <option value="DAF">DAF</option>
+                    <option value="ADMIN_G">Administrateur système</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="mdp" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="mdp2" name="mdp" required>
+                <input type="password" class="form-control" id="mdp" name="mdp" required>
             </div>
             
             <div class="d-flex justify-content-end align-items-end">
-                <button type="reset" name="signaler" class="btn btn-outline-primary w-25 mt-3 me-3">Annuler</button>
+                <button type="reset" class="btn btn-outline-primary w-25 mt-3 me-3">Annuler</button>
                 <button type="submit" name="signaler" class="btn btn-primary w-25 mt-3">Ajouter</button>
             </div>
         </form>
@@ -68,22 +67,4 @@
 
       <script>
 
-function chargerEquipement() {
-
-  document.getElementById('equipements').innerHTML = '<option></option>';
-    
-    fetch('controllers/equipement_controler.php?type=' + document.getElementById('type_equipement').value +'&user_id=' + <?php echo $_SESSION['id_user'];?>)
-        .then(response => response.json())
-        .then(equipements => {
-            equipements.forEach(function (equipement) {
-                var option = document.createElement('option');
-                option.value = equipement.id_equipement;
-                option.textContent = equipement.désignation + " - " + equipement.caractéristique;
-                document.getElementById('equipements').appendChild(option);
-            });
-        })
-        .catch(error => console.error('Erreur lors de la récupération des équipements:', error));
-}
-
-        
-      </script>
+     </script>
