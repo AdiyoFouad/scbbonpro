@@ -1,7 +1,7 @@
 <?php
-//include_once("models/user_model.php");
+include_once("models/user_model.php");
 
-//$users = getUsers(); // Récupérer les utilisateurs
+$users = getUsers(); // Récupérer les utilisateurs
 ?>
 
 <div class="container-fluid">
@@ -28,7 +28,7 @@
                         </select>
                     </div>
                     <div class="col d-flex justify-content-end align-items-center mt-2">
-                        <button class="btn btn-primary" onclick="showPopup()">Ajouter un utilisateur</button>
+                        <a href="?page=utilisateur_plus"><button class="btn btn-primary">Ajouter un utilisateur</button></a>
                     </div>
                 </div>
             </div>
@@ -55,16 +55,12 @@
                         </th>
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0"></h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0"></h6>
-                        </th>
+                        </th>   
                     </tr>
-                </thead>
+                </thead> 
                 <tbody>
-                   <!-- <?php// while ($user = $users->fetch(PDO::FETCH_ASSOC)) : ?>
+                   <?php while ($user = $users->fetch(PDO::FETCH_ASSOC)) : ?>
                         <tr>
-                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0"><?php echo $user['id_user']; ?></h6></td>
                             <td class="border-bottom-0">
                                 <p class="fw-normal mb-0"><?php echo $user['nom']; ?></p>
                             </td>
@@ -82,119 +78,78 @@
                             </td>
                             <td class="border-bottom-0">
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <button type="submit" class="btn btn-warning me-1" onclick="showPopup2(<?php echo $user['id_user']; ?>)">Modifier</button>
+                                    <button type="submit" class="btn btn-warning me-1" onclick="showPopup(<?php echo $user['id_user']; ?>)">Modifier</button>
+                                    <form action="controllers/user_controler.php" method="post">
+                                        <input name="id_user" value="<?= $user['id_user'] ?>" type="text" hidden>
+                                        <button name="delete_user" class="btn btn-outline-danger me-1" type="submit">Supprimer</button>
+                                    </form>
                                     
                                 </div>
                             </td>
-                        </tr>-->
-                    <?php //endwhile; ?>
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
     </div>
 
     <div id="popup1" class="popup">
-        <button class="btn btn-danger fs-5  d-flex justify-content-center align-items-center" id="fermer" onclick="hidePopup()">
+        <button class="btn btn-danger fs-5  d-flex justify-content-center align-items-center" id="fermer2" onclick="hidePopup2()">
                 <i class="ti ti-x fs-5 fw-bolder"></i>
             </button>
-        <form action="controllers/user_controler.php" method="post">
-            <h5 class="text-center">Ajouter un nouvel utilisateur</h5>
-            <hr>
+         
+            
+    </div>
 
-            <div class="">
-                <span class="me-3 fw-semibold">Administrateur :</span>
-                <label for="non" class="me-2">
-                    <input id="non" type="radio" name="administrateur" value="false">
-                    Non
-                </label>
-
-                <label for="oui" class="me-2 ">
-                    <input id="oui" type="radio" name="administrateur" value="true">
-                    Oui
-                </label>
-            </div>
+    <div id="popup" class="popup">
+            <button class="btn btn-danger fs-5  d-flex justify-content-center align-items-center" id="fermer" onclick="hidePopup()">
+                <i class="ti ti-x fs-5 fw-bolder"></i>
+            </button>
+            <form action="controllers/user_controler.php" method="post">
+                <input type="text" id="id_user" name="user_id" hidden>
 
             <div class="mb-3">
                 <label for="nom" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="nom" name="nom" required>
+                <input type="text" class="form-control" id="nom" name="nom" requied>
             </div>
             <div class="mb-3">
                 <label for="prenom" class="form-label">Prénom</label>
-                <input type="text" class="form-control" id="prenom" name="prenom" required>
+                <input type="text" class="form-control" id="prenom" name="prenom" requred>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input type="email" class="form-control" id="email" name="email" requred>
             </div>
             <div class="mb-3">
                 <label for="departement" class="form-label">Département</label>
                 <select id="departement" class="form-select" name="departement" required>
-                    <option disabled selected>Département</option>
+                    <option value="" disabled selected>Sélectionner un département</option>
                     <option value="DE">DE</option>
                     <option value="Logistique">Logistique</option>
                     <option value="Comptabilité">Comptabilité</option>
+                </select>
+            </div>       
+            <div class="mb-3">
+                <label for="type_user" class="form-label">Type d'utilisateur</label>
+                <select id="type_user" class="form-select" name="type_user" required>
+                    <option value="" disabled selected>Sélectionner un type d'utilisateur</option>
+                    <option value="SIMPLE">Standard</option>
+                    <option value="DE">DE</option>
+                    <option value="CC">CC</option>
+                    <option value="DCLI">DCLI</option>
+                    <option value="DGA">DGA</option>
+                    <option value="DAF">DAF</option>
+                    <option value="ADMIN_G">Administrateur système</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="mdp" class="form-label">Mot de passe</label>
                 <input type="password" class="form-control" id="mdp" name="mdp" required>
             </div>
-            <div class="d-flex justify-content-center align-items-center">
-                <button type="submit" name="new_user" class="btn btn-primary w-25 mt-3">Créer</button>
-            </div>
-        </form>
-    </div>
 
-    <div id="popup2" class="popup">
-            <button class="btn btn-danger fs-5  d-flex justify-content-center align-items-center" id="fermer2" onclick="hidePopup2()">
-                <i class="ti ti-x fs-5 fw-bolder"></i>
-            </button>
-        <form action="controllers/user_controler.php" method="post">
-            <h5 class="text-center">Modifier utilisateur</h5>
-            <hr>
-            <input type="text" id="user_id2" name="user_id" hidden>
-            <div class="">
-                <span class="me-3 fw-semibold">Administrateur :</span>
-                <label for="non2" class="me-2">
-                    <input id="non2" type="radio" name="administrateur" value="0">
-                    Non
-                </label>
-
-                <label for="oui2" class="me-2 ">
-                    <input id="oui2" type="radio" name="administrateur" value="1">
-                    Oui
-                </label>
-            </div>
-
-            <div class="mb-3">
-                <label for="nom" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="nom2" name="nom" required>
-            </div>
-            <div class="mb-3">
-                <label for="prenom" class="form-label">Prénom</label>
-                <input type="text" class="form-control" id="prenom2" name="prenom" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email2" name="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="departement" class="form-label">Département</label>
-                <select id="departement2" class="form-select" name="departement" required>
-                    <option disabled selected>Département</option>
-                    <option value="DE">DE</option>
-                    <option value="Logistique">Logistique</option>
-                    <option value="Comptabilité">Comptabilité</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="mdp" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="mdp2" name="mdp" required>
-            </div>
-            <div class="d-flex justify-content-center align-items-center">
-                <form action="" method="post">
-                  <button type="submit" name="alter_user" class="btn btn-primary w-25 mt-3">Modifier</button>
-                </form>
+            <div class="d-flex justify-content-end align-items-end">
+                <button type="reset" class="btn btn-outline-primary w-25 mt-3 me-3">Annuler</button>
+                <button type="submit" name="alter_user" class="btn btn-primary w-25 mt-3">Modifier</button>
             </div>
         </form>
     </div>
@@ -277,42 +232,40 @@
 
 <script>
     // Fonction pour afficher la pop-up
-    function showPopup() {
+    function showPopup2() {
         document.getElementById('popup1').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
     }
 
     // Fonction pour masquer la pop-up
-    function hidePopup() {
+    function hidePopup2() {
         document.getElementById('popup1').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
     }
 
-    function showPopup2(userId) {
+    function showPopup(userId) {
       console.log(userId);
       fetch('controllers/user_controler.php?id=' + userId)
         .then(response => response.json())
         .then(userData => {
-            document.getElementById('non2').checked = userData.administrateur == 1 ? false : true;
-            document.getElementById('oui2').checked = userData.administrateur == 0 ? false : true;
-            document.getElementById('user_id2').value = userData.id_user;
-            document.getElementById('nom2').value = userData.nom;
-            document.getElementById('prenom2').value = userData.prenom;
-            document.getElementById('email2').value = userData.email;
-            document.getElementById('mdp2').value = userData.mdp;
-            
-            document.getElementById('mdp22').value = userData.mdp;
-            document.getElementById('departement2').value = userData.departement;
+            console.log(userData);
+            document.getElementById('id_user').value = userData.id_user;
+            document.getElementById('nom').value = userData.nom;
+            document.getElementById('prenom').value = userData.prenom;
+            document.getElementById('email').value = userData.email;
+            document.getElementById('mdp').value = userData.mdp;
+            document.getElementById('departement').value = userData.departement;
+            document.getElementById('type_user').value = userData.type_user;
         })
         .catch(error => console.error('Erreur lors de la récupération des données de l\'utilisateur:', error));
 
-        document.getElementById('popup2').style.display = 'block';
+        document.getElementById('popup').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
     }
 
     // Fonction pour masquer la pop-up
-    function hidePopup2() {
-        document.getElementById('popup2').style.display = 'none';
+    function hidePopup() {
+        document.getElementById('popup').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
     }
 

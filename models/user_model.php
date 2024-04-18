@@ -24,7 +24,7 @@ function seconnecter($email, $mdp) {
 
 function getUsers(){
     $req = execSQL(
-        'SELECT * FROM users',
+        'SELECT * FROM users ORDER BY nom , prenom',
         array()
     );
     return $req;
@@ -60,9 +60,33 @@ function getUsersByDepartement($departement){
 
 function alterUser($nom, $prenom, $email, $departement, $type_user, $mdp, $user_id){
     $req = execSQL(
-        'UPDATE users SET nom = ?, prenom = ?, email = ?, departement = ?, administrateur = ?, mdp = ? WHERE id_user = ?',
+        'UPDATE users SET nom = ?, prenom = ?, email = ?, departement = ?, type_user = ?, mdp = ? WHERE id_user = ?',
         array($nom, $prenom, $email, $departement, $type_user, $mdp, $user_id)
     );
 }
+
+function deleteUser($id_utilisateur){
+    // Vérifier s'il existe des éléments associés à cet utilisateur dans d'autres tables
+    $req_check = execSQL(
+        'SELECT COUNT(*) as count_associations FROM bonpro, users WHERE bonpro.demandeur = ? AND bonpro.demandeur = users.id_user',
+        array($id_utilisateur)
+    );
+
+    $result_check = $req_check->fetch(PDO::FETCH_ASSOC);
+
+    // S'il n'y a aucune association avec cet utilisateur dans d'autres tables
+    if($result_check['count_associations'] == 0) {
+        // Supprimer l'utilisateur
+        $req_delete = execSQL(
+            'DELETE FROM users WHERE id_user=?',
+            array($id_utilisateur)
+        );
+        return true;
+    } else {
+        // Il existe des associations avec cet utilisateur dans d'autres tables, donc ne pas le supprimer
+        return false;
+    }
+}
+
 
 ?>

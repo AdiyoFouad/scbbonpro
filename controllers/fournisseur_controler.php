@@ -19,7 +19,7 @@ if (isset($_POST['delete_fournisseur'])) {
     if (deleteFournisseur($_POST['id_fournisseur'])) {
         $_SESSION['bon_pro_msg'] = "Fournisseur supprimé avec succès.";
     } else {
-        $_SESSION['bon_pro_msg_r'] = "Impossible de supprimé le fournisseur car déjà présent sur un bon provisoire.";
+        $_SESSION['bon_pro_msg_r'] = "Impossible de supprimer le fournisseur car déjà présent sur un bon provisoire.";
     }
     header("Location:../?page=fournisseurs");
 }
