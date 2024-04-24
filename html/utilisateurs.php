@@ -302,17 +302,22 @@ function updateUsersTable(usersData) {
         usersData.forEach(user => {
             var newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td class="border-bottom-0"><h6 class="fw-semibold mb-0">${user.id_user}</h6></td>
                 <td class="border-bottom-0"><p class="fw-normal mb-0">${user.nom}</p></td>
                 <td class="border-bottom-0"><h6 class="fw-normal text-wap mb-0">${user.prenom}</h6></td>
                 <td class="border-bottom-0"><h6 class="fw-normal mb-0">${user.departement}</h6></td>
                 <td class="border-bottom-0"><h6 class="fw-normal mb-0">${user.email}</h6></td>
                 <td class="border-bottom-0"><h6 class="fw-normal mb-0">${user.mdp}</h6></td>
+                
                 <td class="border-bottom-0">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <button type="submit" class="btn btn-warning me-1" onclick="showPopup2(${user.id_user})">Modifier</button>
-                    </div>
-                </td>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <button type="submit" class="btn btn-warning me-1" onclick="showPopup(${user.mdp})">Modifier</button>
+                                    <form action="controllers/user_controler.php" method="post">
+                                        <input name="id_user" value="${user.mdp}" type="text" hidden>
+                                        <button name="delete_user" class="btn btn-outline-danger me-1" type="submit">Supprimer</button>
+                                    </form>
+                                    
+                                </div>
+                            </td>
             `;
 
             tableBody.appendChild(newRow);

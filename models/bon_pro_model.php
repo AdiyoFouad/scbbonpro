@@ -105,5 +105,46 @@ function action_cc($action, $id_bon){
 }
 
 
+function bons_approuve(){
+    $req = execSQL(
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND appro_dga = true AND id_user = ? ORDER BY ref DESC',
+        array($_SESSION['bon_pro_id_user'])  
+    );
+    return $req;
+}
+
+function bons_approuve_daf(){
+    $req = execSQL(
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND appro_daf = true ORDER BY ref DESC',
+        array()
+    );
+    return $req;
+}
+
+function bons_approuve_de(){
+    $req = execSQL(
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND appro_de = true ORDER BY ref DESC',
+        array()
+    );
+    return $req;
+}
+
+function bons_approuve_dga(){
+    $req = execSQL(
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND appro_dga = true ORDER BY ref DESC',
+        array()
+    );
+    return $req;
+}
+
+function bons_approuve_dcli(){
+    $req = execSQL(
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND appro_dcli = true ORDER BY ref DESC',
+        array()
+    );
+    return $req;
+}
+
+
 
 ?>

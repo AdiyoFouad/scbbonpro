@@ -123,20 +123,23 @@ switch ($_SESSION['bon_pro_type_user']) {
         <div id="pdf-content"></div>
 
         <div class="row mt-2">
-            <div class="col-3">
-                <button type="submit" class="btn btn-outline-danger w-100" name="rejeter" onclick="showPopup2()">Supprimer</button>
-            </div>
-            <div class="col-3">
-            <button type="submit" class="btn btn-outline-secondary w-100" name="rejeter" onclick="showPopup2()">Modifier</button>
-            </div>
-            <form class="col-3 me-0" action="controllers/bon_controler.php" method="post">
-                <input type="text" name="id_bon_rejet" id="id_bon_rejet" hidden>
-                <button type="submit" class="btn btn-danger w-100" name="rejet">Rejeter</button>
-            </form>
-            <form class="col-3 ms-0" action="controllers/bon_controler.php" method="post">
-                <input type="text" name="id_bon_approuve" id="id_bon_approuve" hidden>
-                <button type="submit" class="btn btn-success w-100 fw-semibold" name="approbation">Approuver</button>
-            </form>
+            <?php if ($_SESSION['bon_pro_type_user'] == 'SIMPLE') : ?>
+                <div class="offset-3 col-3">
+                    <button type="submit" class="btn btn-outline-danger w-100" name="rejeter" onclick="showPopup2()">Supprimer</button>
+                </div>
+                <div class="col-3">
+                <button type="submit" class="btn btn-outline-secondary w-100" name="rejeter" onclick="showPopup2()">Modifier</button>
+                </div>
+            <?php else : ?>
+                <form class="offset-3 col-3 me-0" action="controllers/bon_controler.php" method="post">
+                    <input type="text" name="id_bon_rejet" id="id_bon_rejet" hidden>
+                    <button type="submit" class="btn btn-danger w-100" name="rejet">Rejeter</button>
+                </form>
+                <form class="col-3 ms-0" action="controllers/bon_controler.php" method="post">
+                    <input type="text" name="id_bon_approuve" id="id_bon_approuve" hidden>
+                    <button type="submit" class="btn btn-success w-100 fw-semibold" name="approbation">Approuver</button>
+                </form>
+            <?php endif;?>
         </div>
     </div>
 

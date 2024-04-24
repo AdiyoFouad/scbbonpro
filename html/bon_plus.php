@@ -33,7 +33,7 @@ $fournisseurs = getFournisseur();
                             <div class="col mb-3">
                                 <label for="beneficiaire" class="form-label">Bénéficiaire</label>
                                 <select id="beneficiaire" class="form-select" name="beneficiaire" required>
-                                    <option disabled selected>Bénéficiaire</option>
+                                    <option value="" disabled selected>Bénéficiaire</option>
                                     <option value="DAF">DAF</option>
                                     <option value="DGA">DGA</option>
                                     <option value="DCLI">DCLI</option>
@@ -51,7 +51,7 @@ $fournisseurs = getFournisseur();
                         <div class="mb-3">
                             <label for="fournisseur" class="form-label">Fournisseur</label>
                             <select id="fournisseur" class="form-select" name="fournisseur" required>
-                                <option disabled selected>Fournisseur</option>
+                                <option value="" disabled selected>Fournisseur</option>
                                 <?php while ($fournisseur = $fournisseurs->fetch(PDO::FETCH_ASSOC)) : ?>
                                     <option value=<?= $fournisseur['id_fournisseur'] ?> ><?= $fournisseur['nom_fournisseur'] ?></option>
                                 <?php endwhile; ?>

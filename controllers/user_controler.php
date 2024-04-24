@@ -38,12 +38,8 @@ if (isset($_GET['departement'])) {
 }
 
 if (isset($_POST['delete_user'])) {
-    if (deleteUser($_POST['id_user'])) {
-        $_SESSION['bon_pro_msg'] = "Utilisateur supprimé avec succès.";
-    } else {
-        $_SESSION['bon_pro_msg_r'] = "Impossible de supprimer cet utilisateur car déjà présent sur un bon provisoire.";
-    }
-    header("Location:../?page=fournisseurs");
+    deleteUser($_POST['id_user']);
+    header("Location:../?page=utilisateurs");
 }
 
 ?>

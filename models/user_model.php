@@ -67,6 +67,11 @@ function alterUser($nom, $prenom, $email, $departement, $type_user, $mdp, $user_
 
 function deleteUser($id_utilisateur){
     // Vérifier s'il existe des éléments associés à cet utilisateur dans d'autres tables
+    if ($id_utilisateur == $_SESSION['bon_pro_id_user']) {
+        $_SESSION['bon_pro_msg_r'] = "Impossible de supprimer cet utilisateur car l'utilisateur est connecté(e).";
+
+        return false;
+    }
     $req_check = execSQL(
         'SELECT COUNT(*) as count_associations FROM bonpro, users WHERE bonpro.demandeur = ? AND bonpro.demandeur = users.id_user',
         array($id_utilisateur)
@@ -81,8 +86,12 @@ function deleteUser($id_utilisateur){
             'DELETE FROM users WHERE id_user=?',
             array($id_utilisateur)
         );
+        $_SESSION['bon_pro_msg'] = "Utilisateur supprimé avec succès.";
         return true;
     } else {
+        
+        $_SESSION['bon_pro_msg_r'] = "Impossible de supprimer cet utilisateur car déjà présent sur un bon provisoire.";
+  
         // Il existe des associations avec cet utilisateur dans d'autres tables, donc ne pas le supprimer
         return false;
     }
