@@ -99,6 +99,9 @@
     transform: translateX(20px);
   }
 
+  <?php
+    include_once("models/user_model.php");
+  ?>
 
   </style>
 <header class="app-header">
@@ -122,7 +125,7 @@
 
             <li class="nav-item mt-4 ms-4 ">
               <label class="switch">
-                <input type="checkbox" id="toggleSwitch">
+              <input onchange="update_presence_dcli()" type="checkbox" id="toggleSwitch" <?php echo presence_dcli() === '1' ? "checked" : ""; ?>>
                 <span class="slider"></span>
               </label>
             </li>
@@ -201,7 +204,7 @@
       </header>
       <!--  Header End -->
 
-      <script>
+<script>
   function toggleNotification() {
     var notificationBox = document.getElementById("notificationBox");
     if (notificationBox.style.display == "block") {
@@ -209,5 +212,14 @@
     } else {
       notificationBox.style.display = "block";
     }
+  }
+
+  function update_presence_dcli() {
+    fetch('controllers/user_controler.php?update_presence_dcli=1')
+        .then(response => response.text())
+        .then(userData => {
+          console.log("eee");
+        })
+        .catch(error => console.error('Erreur lors de la modification de la présence de l\'utilisateur:', error));
   }
 </script>

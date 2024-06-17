@@ -1,19 +1,37 @@
 <?php
-//include_once("models/user_model.php");
+include_once("models/bon_pro_model.php");
 
-//$users = getUsers(); // Récupérer les utilisateurs
+switch ($_SESSION['bon_pro_type_user']) {
+    case 'DCLI':
+        $bons = bons_rejete_dcli();
+        break;
+
+    case 'DE':
+        $bons = bons_rejete_de();
+        break;
+
+    case 'DGA':
+        $bons = bons_rejete_dga();
+        break;
+
+    case 'DAF':
+        $bons = bons_rejete_daf();
+        break;
+
+    case 'CC':
+        $bons = bons_rejete_cc();
+        break;
+    
+    default:
+        $bons = bons_rejete();
+        break;
+}
+
 ?>
 
 <div class="container-fluid">
     <div class="container-fluid">
-        <div class="row">
-            <div class=" col-6 col-sm-5">
-            <h4 class=" fw-semibold">Bons rejetés</h4>
-            </div>
-            <div class="col d-flex justify-content-end ">
-                <button class="btn btn-primary p-2 pt-0 pb-0"><a target="_blank" href="pdf.php?file=liste_bon_regularise" class="fs-5 ti ti-printer text-white"></a></button>
-            </div>
-        </div>
+        <h4 class=" fw-semibold">Bons rejetés</h4>
         <hr>
 
         <div class="card rounded-0 mb-3 p-0">
@@ -46,12 +64,11 @@
 
             </div>
         </div>
-
         <div class="table-responsive">
             <table class="table table-hover text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4 bg-light">
                     <tr>
-                        <th class="border-bottom-0">
+                        <th class="border-bottom-0" style="width:1px;">
                             <h6 class="fw-semibold mb-0"></h6>
                         </th>
                         <th class="border-bottom-0">
@@ -76,136 +93,89 @@
                     </tr>
                 </thead>
                 <tbody>
-                        <tr onclick="showBonPro()">
-                            <td><i class="ti ti-cards fw-semibold"></i></td>
-                          <td>11/03/2024</td>
-                          <td>DCLI/2024/005</td>
-                          <td> D. Magengo</td>      
-                          <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                          <td class="text-center">DGA</td>
-                          <td>150 000 F</td>
-                          <td>
-                              <div class="d-flex align-items-center gap-2">
-                                  <span class="badge bg-success rounded-3 fw-semibold"> </span>
-                              </div>
-                          </td>
-                        </tr>
-                        <tr>
-                            <td><i class="ti ti-cards fw-semibold"></i></td>
-                          <td>11/03/2024</td>
-                          <td>DCLI/2024/005</td>
-                          <td> D. Magengo</td>      
-                          <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                          <td class="text-center">DCLI</td>
-                          <td>12 150 000 F</td>
-                          <td>
-                              <div class="d-flex align-items-center gap-2">
-                                  <span class="badge bg-success rounded-3 fw-semibold"> </span>
-                              </div>
-                          </td>
-                        </tr>
-                        <tr>
-                            <td><i class="ti ti-cards fw-semibold"></i></td>
-                          <td>11/03/2024</td>
-                          <td>DCLI/2024/005</td>
-                          <td> D. Magengo</td>      
-                          <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                          <td class="text-center">DGA</td>
-                          <td>150 000 F</td>
-                          <td>
-                              <div class="d-flex align-items-center gap-2">
-                                  <span class="badge bg-success rounded-3 fw-semibold"> </span>
-                              </div>
-                          </td>
-                        </tr>
-                        <tr>
-                            <td><i class="ti ti-cards fw-semibold"></i></td>
-                          <td>11/03/2024</td>
-                          <td>DCLI/2024/005</td>
-                          <td> D. Magengo</td>      
-                          <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                          <td class="text-center">DGA</td>
-                          <td>150 000 F</td>
-                          <td>
-                              <div class="d-flex align-items-center gap-2">
-                                  <span class="badge bg-success rounded-3 fw-semibold"> </span>
-                              </div>
-                          </td>
-                        </tr>
-                   <!-- 
-                    <?php //while ($user = $users->fetch(PDO::FETCH_ASSOC)) : ?>
-                        <tr>
-                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0"><?php echo $user['id_user']; ?></h6></td>
-                            <td class="border-bottom-0">
-                                <p class="fw-normal mb-0"><?php echo $user['nom']; ?></p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-normal text-wap mb-0"><?php echo $user['prenom']; ?></h6>
-                            </td>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-normal mb-0"><?php echo $user['departement']; ?></h6>
-                            </td>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-normal mb-0"><?php echo $user['email']; ?></h6>
-                            </td>
-                            <td class="border-bottom-0">
-                                <h6 class="fw-normal mb-0"><?php echo $user['mdp']; ?></h6>
-                            </td>
-                            <td class="border-bottom-0">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <button type="submit" class="btn btn-warning me-1" onclick="showPopup2(<?php echo $user['id_user']; ?>)">Modifier</button>
-                                    
+                    <?php while ($bon = $bons->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <tr onclick="showBonPro(<?php $bon_pro=$bon;echo $bon['id_bon']; ?>)">
+                            <td ><i class="ti ti-cards fw-semibold"></i></td>
+                            <td><?= date('d-m-Y', strtotime($bon['date_de_creation'])) ?></td>
+                            <td><?= $bon['ref'] ?></td>
+                            <td> <?= $bon['nom'][0]. '. ' .$bon['prenom'] ?></td>      
+                            <td><?= strlen($bon['libelle']) > 30 ? substr($bon['libelle'], 0, 35) . '...' : $bon['libelle'] ?></td>
+                            <td class="text-center"><?= $bon['beneficiaire'] ?></td>
+                            <td><?= $bon['montant'] ?> F</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-danger rounded-3 fw-semibold"> </span>
                                 </div>
                             </td>
                         </tr>
-                    <?php //endwhile; ?>
-                    -->
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
     </div>
 
     <div id="popup1" class="popup">
-        <button class="btn btn-danger fs-5  d-flex justify-content-center align-items-center" id="fermer" onclick="hidePopup()">
+        <button class="fermer btn btn-danger fs-5  d-flex justify-content-center align-items-center" id="fermer" onclick="hidePopup()">
             <i class="ti ti-x fs-5 fw-bolder"></i>
         </button>
 
-        
 
-        <?php 
-            $file = "bon";
-            require_once('test2.php'); 
-        ?>
+        <div id="pdf-content"></div>
 
-        <div class="row">
-            <div class="col-3"></div>
-            <form class="col-3" action="controllers/ticket_controler.php" method="post">
-                <input type="text" name="ref" id="ref1" hidden>
-                <button type="submit" class="btn btn-danger w-100" name="rejeter">Rejeter</button>
-            </form>
-            <form class="col-3" action="controllers/ticket_controler.php" method="post">
-                <input type="text" name="ref" id="ref2" hidden>
-                <button type="submit" class="btn btn-success w-100 fw-semibold" name="approuverer">Approuver</button>
-            </form>
+        <div class="row mt-2">
+            <?php if ($_SESSION['bon_pro_type_user'] == 'CC') : ?>
+                <div class="col-3 mb-0"></div>
+                <form class="col-6 mb-0" action="controllers/bon_controler.php" method="post">
+                    <input type="text" name="id_bon" id="id_bon_approuve" hidden>
+                    <button type="submit" class="btn btn-outline-success w-100 fs-4 fw-bolder" name="payer_bon">Payer</button>
+                </form>
+            <?php endif;?>
         </div>
     </div>
 
 
     <!-- Overlay pour masquer l'arrière-plan -->
     <div id="overlay"></div>
+    
 </div>
 
 <style>
 
-.table-responsive tbody tr:hover {
-    background-color: rgba(45, 5, 90, 0.1);
-    cursor: pointer;
-    color:white;
-}
+    #pdf-content, #pdf-content object{
+        width:100%;
+        height:80vh;
+    }
 
-.popup {
-    width:50%;
-    height: auto;
+    #pdf-content {
+
+    }
+
+    .loader {
+        border: 4px solid #f3f3f3; 
+        border-top: 4px solid #3498db; 
+        border-radius: 50%; 
+        width: 50px; 
+        height: 50px; 
+        animation: spin 2s linear infinite; 
+        position: absolute;
+        top:35%;
+        left:48%;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .table-responsive tbody tr:hover {
+        background-color: rgba(45, 5, 90, 0.1);
+        cursor: pointer;
+        color:white;
+    }
+
+    .popup {
+        width:50%;
+        height: auto;
         display:none;
         position: fixed;
         top: 50%;
@@ -217,7 +187,8 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         z-index: 1000;
     }
-    #fermer {
+
+    .fermer {
         position: absolute;
         top: -15px;
         right: -15px;
@@ -226,7 +197,6 @@
         height: 35px;
         color: #fff;
     }
-
     
 
     .table-responsive thead,
@@ -250,12 +220,39 @@
 </style>
 
 <script>
-    function showBonPro() {
+
+    function showBonPro(idbon) {
+        //document.getElementById('id_bon_rejet').value = idbon;
         document.getElementById('overlay').style.display = 'block';
-        
         document.getElementById('popup1').style.display = 'block';
+        document.getElementById('pdf-content').innerHTML = '<div class="loader"></div>';
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4){
+                if(this.status == 200){
+                    var pdfData = this.responseText;
+                    document.getElementById('pdf-content').innerHTML = '<object data="data:application/pdf;base64,'+ pdfData+'" type="application/pdf">Imposible d\'ouvrir le bon</object>';
+                    
+                } else {
+                    // Gérer les erreurs de chargement du PDF
+                    document.getElementById('pdf-content').innerHTML = 'Erreur lors du chargement du PDF';
+                }
+                // Masquer le loader
+                document.getElementById('loader').style.display = 'none';
+            }
+        };
+        xhr.open("GET", "pdf.php?file=bon&id_bon_afficher="+ idbon);
+        xhr.send();  
+        
+        var bon = document.getElementById('id_bon_approuve');
+        if (bon) {
+            bon.value = idbon;
+        }
+        
     }
-    // Fonction pour afficher la pop-up
+
+    
     
 
     // Fonction pour masquer la pop-up
@@ -264,24 +261,9 @@
         document.getElementById('overlay').style.display = 'none';
     }
 
-    function showPopup2(userId) {
-      console.log(userId);
-      fetch('controllers/user_controler.php?id=' + userId)
-        .then(response => response.json())
-        .then(userData => {
-            document.getElementById('non2').checked = userData.administrateur == 1 ? false : true;
-            document.getElementById('oui2').checked = userData.administrateur == 0 ? false : true;
-            document.getElementById('user_id2').value = userData.id_user;
-            document.getElementById('nom2').value = userData.nom;
-            document.getElementById('prenom2').value = userData.prenom;
-            document.getElementById('email2').value = userData.email;
-            document.getElementById('mdp2').value = userData.mdp;
-            
-            document.getElementById('mdp22').value = userData.mdp;
-            document.getElementById('departement2').value = userData.departement;
-        })
-        .catch(error => console.error('Erreur lors de la récupération des données de l\'utilisateur:', error));
-
+    function showPopup2() {
+      console.log();
+        document.getElementById('popup1').style.display = 'none';
         document.getElementById('popup2').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
     }
@@ -293,56 +275,6 @@
     }
 
 
-    function filterUsers() {
-    // Récupérer la valeur du filtre
-    var selectedFilter = document.getElementById('type_equipement').value;
-
-    // Envoyer une requête AJAX pour récupérer les utilisateurs en fonction du filtre
-    fetch('controllers/user_controler.php?departement=' + selectedFilter)
-        .then(response => response.json())
-        .then(usersData => {
-            // Mettre à jour le tableau des utilisateurs avec les données récupérées
-            updateUsersTable(usersData);
-            console.log(usersData);
-        })
-        .catch(error => console.error('Erreur lors de la récupération des utilisateurs:', error));
-}
-
-function updateUsersTable(usersData) {
-    // Effacer le tableau actuel
-    var tableBody = document.querySelector('tbody');
-    tableBody.innerHTML = '';
-
-    if (usersData.length === 0) {
-        // Afficher un message si la liste des utilisateurs est vide
-        var emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="7" class="text-center">Aucun utilisateur trouvé</td>
-        `;
-        tableBody.appendChild(emptyRow);
-    } else {
-        // Reconstruire le tableau avec les nouvelles données
-        usersData.forEach(user => {
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td class="border-bottom-0"><h6 class="fw-semibold mb-0">${user.id_user}</h6></td>
-                <td class="border-bottom-0"><p class="fw-normal mb-0">${user.nom}</p></td>
-                <td class="border-bottom-0"><h6 class="fw-normal text-wap mb-0">${user.prenom}</h6></td>
-                <td class="border-bottom-0"><h6 class="fw-normal mb-0">${user.departement}</h6></td>
-                <td class="border-bottom-0"><h6 class="fw-normal mb-0">${user.email}</h6></td>
-                <td class="border-bottom-0"><h6 class="fw-normal mb-0">${user.mdp}</h6></td>
-                <td class="border-bottom-0">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <button type="submit" class="btn btn-warning me-1" onclick="showPopup2(${user.id_user})">Modifier</button>
-                    </div>
-                </td>
-            `;
-
-            tableBody.appendChild(newRow);
-        });
-    }
-}
-
-
+    
     
 </script>

@@ -8,6 +8,8 @@ session_start();
 
 
 if (isset($_POST['new_bon']) ){
+    $ref = newRef();
+    $url_proforma = '';
 
     
     
@@ -17,7 +19,6 @@ if (isset($_POST['new_bon']) ){
             $infosfichier = pathinfo($_FILES['proforma']['name']);
             $extension_upload = $infosfichier['extension'];
             $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
-            $ref = newRef();
             $url_proforma = 'uploads/proforma_bon_' . $ref . '.' .$extension_upload;
             
             if (in_array($extension_upload, $extensions_autorisees)){
@@ -56,6 +57,7 @@ if (isset($_POST['approbation']) ){
             # code...
             break;
     }  
+    header("Location:../?page=bon_approuve");
 }
 
 if (isset($_POST['rejet']) ){
@@ -80,12 +82,18 @@ if (isset($_POST['rejet']) ){
             # code...
             break;
     }  
+    header("Location:../?page=bon_rejete");
+}
+
+if (isset($_POST['payer_bon']) ){
+    payer_bon($_POST['id_bon']);
 }
 
 if (isset($_GET['id_bon'])){
     $bon = getBonById($_GET['id_bon']);
     echo json_encode($bon);
 }
+
 
 
 ?>

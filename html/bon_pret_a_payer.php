@@ -1,37 +1,13 @@
 <?php
 include_once("models/bon_pro_model.php");
 
-switch ($_SESSION['bon_pro_type_user']) {
-    case 'DCLI':
-        $bons = bons_approuve_dcli();
-        break;
-
-    case 'DE':
-        $bons = bons_approuve_de();
-        break;
-
-    case 'DGA':
-        $bons = bons_approuve_dga();
-        break;
-
-    case 'DAF':
-        $bons = bons_approuve_daf();
-        break;
-
-    case 'CC':
-        $bons = bons_approuve_cc();
-        break;
-    
-    default:
-        $bons = bons_approuve();
-        break;
-}
+$bons = bons_pret_a_payer();
 
 ?>
 
 <div class="container-fluid">
     <div class="container-fluid">
-        <h4 class=" fw-semibold">Bons approuvés</h4>
+        <h4 class=" fw-semibold">Bons prêt à payer</h4>
         <hr>
 
         <div class="card rounded-0 mb-3 p-0">
@@ -122,6 +98,15 @@ switch ($_SESSION['bon_pro_type_user']) {
 
         <div id="pdf-content"></div>
 
+        <div class="row mt-2">
+            <?php if ($_SESSION['bon_pro_type_user'] == 'CC') : ?>
+                <div class="col-3 mb-0"></div>
+                <form class="col-6 mb-0" action="controllers/bon_controler.php" method="post">
+                    <input type="text" name="id_bon" id="id_bon_approuve" hidden>
+                    <button type="submit" class="btn btn-outline-success w-100 fs-4 fw-bolder" name="payer_bon">Payer</button>
+                </form>
+            <?php endif;?>
+        </div>
     </div>
 
 

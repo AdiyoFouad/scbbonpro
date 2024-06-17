@@ -7,13 +7,13 @@ $users = getUsers(); // Récupérer les utilisateurs
 <div class="container-fluid">
     <div class="container-fluid">
         <div class="row">
-                    <div class=" col-6 col-sm-5">
-                    <h4 class="d-flex justify-content-start align-items-center fw-semibold">Liste des utilisateurs </h4>
-                    </div>
-                    <div class="col d-flex justify-content-end ">
-                        <button class="btn btn-primary p-2 pt-0 pb-0"><a target="_blank" href="pdf.php?file=users" class="fs-5 ti ti-printer text-white"></a></button>
-                    </div>
-                </div>
+            <div class=" col-6 col-sm-5">
+                <h4 class="d-flex justify-content-start align-items-center fw-semibold">Liste des utilisateurs </h4>
+            </div>
+            <div class="col d-flex justify-content-end ">
+                <button class="btn btn-primary p-2 pt-0 pb-0"><a target="_blank" href="pdf.php?file=users" class="fs-5 ti ti-printer text-white"></a></button>
+            </div>
+        </div>
         <hr>
 
         <div class="card mb-3 p-0">

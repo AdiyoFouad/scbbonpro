@@ -97,5 +97,19 @@ function deleteUser($id_utilisateur){
     }
 }
 
+function presence_dcli() {
+    $req = execSQL(
+        'SELECT presence_dcli FROM users WHERE type_user = "DCLI"',
+        array()
+    );
+    return $req->fetchall()[0][0];
+}
+
+function update_presence_dcli() {
+    $req = execSQL(
+        'UPDATE users SET presence_dcli = ? WHERE type_user = "DCLI"',
+        array(!presence_dcli())
+    );
+}
 
 ?>

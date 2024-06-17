@@ -43,6 +43,7 @@
               <span class="hide-menu col-10">bons provisoires</span>
               <i class="ti ti-chevron-right col-2 fs-4 fw-bolder mt-1"></i>
             </li>
+            <?php if ($_SESSION['bon_pro_type_user'] === 'SIMPLE'):?>
             <li class="sidebar-item" data-target="menu_bonpro">
               <a class="sidebar-link" href="?page=bon_plus" aria-expanded="false">
                 <span>
@@ -51,6 +52,7 @@
                 <span class="hide-menu">Nouveau bon</span>
               </a>
             </li>
+            <?php endif; ?>
             <li class="sidebar-item" data-target="menu_bonpro">
               <a class="sidebar-link" href="?page=bon_attente" aria-expanded="false">
                 <span>
@@ -68,13 +70,24 @@
               </a>
             </li>
             <li class="sidebar-item" data-target="menu_bonpro">
-              <a class="sidebar-link" href="?page=bon_regularise" aria-expanded="false">
+              <a class="sidebar-link" href="?page=bon_rejete" aria-expanded="false">
                 <span>
                   <i class="ti ti-square-x text-danger"></i>
                 </span>
-                <span class="hide-menu">Bons à régulariser</span>
+                <span class="hide-menu">Bons rejetés</span>
               </a>
             </li>
+            <?php if ($_SESSION['bon_pro_type_user']==='CC'):?>
+            <li class="sidebar-item" data-target="menu_bonpro">
+              <a class="sidebar-link" href="?page=bon_pret_a_payer" aria-expanded="false">
+                <span>
+                  <i class="ti ti-square-x text-danger"></i>
+                </span>
+                <span class="hide-menu">Bons prêt à payer</span>
+              </a>
+            </li>
+            <?php endif; ?>
+            <?php if ($_SESSION['bon_pro_type_user']==='CC' || $_SESSION['bon_pro_type_user']==='SIMPLE'):?>
             <li class="sidebar-item" data-target="menu_bonpro">
               <a class="sidebar-link" href="?page=bon_cloture" aria-expanded="false">
                 <span>
@@ -83,15 +96,7 @@
                 <span class="hide-menu">Bons clôturés</span>
               </a>
             </li>
-            
-            <li class="sidebar-item" data-target="menu_bonpro">
-              <a class="sidebar-link" href="?page=bon_rejete" aria-expanded="false">
-                <span>
-                  <i class="ti ti-square-x text-danger"></i>
-                </span>
-                <span class="hide-menu">Bons rejetés</span>
-              </a>
-            </li>
+            <?php endif; ?>
             <li class="nav-small-cap row" id="fournisseurs">
               <span class="hide-menu col-10">fournisseurs</span>
               <i class="ti ti-chevron-right col-2 fs-4 fw-bolder mt-1"></i>

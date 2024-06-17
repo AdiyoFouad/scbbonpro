@@ -42,4 +42,8 @@ if (isset($_POST['delete_user'])) {
     header("Location:../?page=utilisateurs");
 }
 
+if (isset($_GET['update_presence_dcli'])) {
+    update_presence_dcli();
+}
+
 ?>

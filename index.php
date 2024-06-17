@@ -35,8 +35,8 @@ switch ($page) {
       $view = 'html/bon_approuve.php';
       break;
 
-  case 'bon_regularise':
-      $view = 'html/bon_regularise.php';
+  case 'bon_pret_a_payer':
+      $view = 'html/bon_pret_a_payer.php';
       break;
 
   case 'bon_cloture':

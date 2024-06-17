@@ -15,7 +15,7 @@ switch ($_SESSION['bon_pro_type_user']) {
         break;
 
     case 'DAF':
-        $bons = bons_en_attente();
+        $bons = bons_en_attente_daf();
         break;
 
     case 'CC':
@@ -123,7 +123,7 @@ switch ($_SESSION['bon_pro_type_user']) {
         <div id="pdf-content"></div>
 
         <div class="row mt-2">
-            <?php if ($_SESSION['bon_pro_type_user'] == 'SIMPLE') : ?>
+            <?php if ($_SESSION['bon_pro_type_user'] === 'SIMPLE') : ?>
                 <div class="offset-3 col-3">
                     <button type="submit" class="btn btn-outline-danger w-100" name="rejeter" onclick="showPopup2()">Supprimer</button>
                 </div>
@@ -286,8 +286,13 @@ switch ($_SESSION['bon_pro_type_user']) {
 <script>
 
     function showBonPro(idbon) {
-        document.getElementById('id_bon_approuve').value = idbon;
-        document.getElementById('id_bon_rejet').value = idbon;
+        if (document.getElementById('id_bon_approuve')) {
+            document.getElementById('id_bon_approuve').value = idbon;
+        }
+        
+        if (document.getElementById('id_bon_rejet')) {         
+            document.getElementById('id_bon_rejet').value = idbon;
+        }
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('popup1').style.display = 'block';
         document.getElementById('pdf-content').innerHTML = '<div class="loader"></div>';
