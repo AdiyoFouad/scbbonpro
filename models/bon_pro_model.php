@@ -190,7 +190,7 @@ function action_cc($action, $id_bon){
 
 function bons_approuve(){
     $req = execSQL(
-        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND id_user = ? 
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND id_user = ? AND payer = false 
         AND (
             (date_appro_dga IS NOT NULL AND appro_dga = true AND validation_finale = "DGA")
             OR (appro_dcli = true)
@@ -254,12 +254,29 @@ function bons_pret_a_payer(){
     return $req;
 }
 
-
 function payer_bon($id_bon){
     $req = execSQL(
         'UPDATE bonpro SET date_paiement = ?, payer = true WHERE id_bon = ?',
         array(date('Y-m-d H:i:s'), $id_bon)
     );
+}
+
+function bons_cloture(){
+    $req = execSQL(
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND id_user = ? AND payer = true 
+        ORDER BY ref DESC',
+        array($_SESSION['bon_pro_id_user'])  
+    );
+    return $req;
+}
+
+function bons_cloture_cc(){
+    $req = execSQL(
+        'SELECT * FROM bonpro, users, fournisseur WHERE id_user=demandeur AND fournisseur_bon = id_fournisseur AND payer = true 
+        ORDER BY ref DESC',
+        array()  
+    );
+    return $req;
 }
 
 

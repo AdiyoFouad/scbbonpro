@@ -1,31 +1,13 @@
 <?php
 include_once("models/bon_pro_model.php");
 
-switch ($_SESSION['bon_pro_type_user']) {
-    case 'DCLI':
-        $bons = bons_approuve_dcli();
-        break;
-
-    case 'DE':
-        $bons = bons_approuve_de();
-        break;
-
-    case 'DGA':
-        $bons = bons_approuve_dga();
-        break;
-
-    case 'DAF':
-        $bons = bons_approuve_daf();
-        break;
-
-    case 'CC':
-        $bons = bons_approuve_cc();
-        break;
-    
-    default:
-        $bons = bons_approuve();
-        break;
+if ($_SESSION['bon_pro_type_user'] === 'SIMPLE') {
+    $bons = bons_cloture();
+} else if ($_SESSION['bon_pro_type_user'] === 'CC'){
+    $bons = bons_cloture_cc();
 }
+
+
 
 ?>
 
@@ -80,9 +62,6 @@ switch ($_SESSION['bon_pro_type_user']) {
                             <h6 class="fw-semibold mb-0"></h6>
                         </th>
                         <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Date</h6>
-                        </th>
-                        <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Reférence</h6>
                         </th>
                         <th class="border-bottom-0">
@@ -97,6 +76,9 @@ switch ($_SESSION['bon_pro_type_user']) {
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Montant</h6>
                         </th>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Date de Paiement</h6>
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -105,12 +87,12 @@ switch ($_SESSION['bon_pro_type_user']) {
                     <?php while ($bon = $bons->fetch(PDO::FETCH_ASSOC)) : ?>
                         <tr onclick="showBonPro(<?php $bon_pro=$bon;echo $bon['id_bon']; ?>)">
                             <td ><i class="ti ti-cards fw-semibold"></i></td>
-                            <td><?= date('d-m-Y', strtotime($bon['date_de_creation'])) ?></td>
                             <td><?= $bon['ref'] ?></td>
                             <td> <?= $bon['nom'][0]. '. ' .$bon['prenom'] ?></td>      
                             <td><?= strlen($bon['libelle']) > 30 ? substr($bon['libelle'], 0, 35) . '...' : $bon['libelle'] ?></td>
                             <td class="text-center"><?= $bon['beneficiaire'] ?></td>
                             <td><?= $bon['montant'] ?> F</td>
+                            <td><?= date('d-m-Y', strtotime($bon['date_paiement'])) ?></td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="badge bg-success rounded-3 fw-semibold"> </span>
@@ -231,8 +213,6 @@ switch ($_SESSION['bon_pro_type_user']) {
 <script>
 
     function showBonPro(idbon) {
-        document.getElementById('id_bon_approuve').value = idbon;
-        //document.getElementById('id_bon_rejet').value = idbon;
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('popup1').style.display = 'block';
         document.getElementById('pdf-content').innerHTML = '<div class="loader"></div>';

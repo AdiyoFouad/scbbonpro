@@ -87,6 +87,7 @@ if (isset($_POST['rejet']) ){
 
 if (isset($_POST['payer_bon']) ){
     payer_bon($_POST['id_bon']);
+    header("Location:../?page=bon_cloture");
 }
 
 if (isset($_GET['id_bon'])){
